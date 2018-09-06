@@ -1,7 +1,7 @@
 import ReactDOM from 'react-dom';
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import VideoInfo from 'video-info';
+import VideoInfoPanel from './video-info-panel';
 
 /**
  * The main React container for the app. It holds the state and passes it down
@@ -16,7 +16,7 @@ class App extends React.Component {
             <BrowserRouter>
                 <Switch>
                     <Route path="/test" 
-                        component={props => <VideoInfo />}
+                        component={props => <VideoInfoPanel />}
                         />
                     <Route exact path="/">
                         <div>Here is the main page.</div>

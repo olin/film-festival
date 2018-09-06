@@ -2,13 +2,24 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import fs from 'fs';
+import SocketIO from 'socket.io';
+
+
 const app = express();
+const socket = new SocketIO(app);
+socket.on('connection', console.log('Client connected.'))
+
 
 // Handle environment file
 if (fs.exists('./.env')) {
     dotenv.config();
 }
 
+let test = 0;
+updateName = () => {
+    socket.broadcast('update', test);
+    test += 1;
+}
 
 // Regex to match on GET requests from component URIs
 const video = /https:\/\/(www\.youtube|vimeo)\.com\//;
