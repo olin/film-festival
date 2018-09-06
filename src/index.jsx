@@ -1,5 +1,7 @@
 import ReactDOM from 'react-dom';
 import React from 'react';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import VideoInfo from 'video-info';
 
 /**
  * The main React container for the app. It holds the state and passes it down
@@ -7,14 +9,23 @@ import React from 'react';
  */
 class App extends React.Component {
 
-    addSong = () => {
-        this.store.dispatch({ type: 'SHOW_SONG_INPUT', val: true })
-        // this.store.dispatch({type: 'ADD_SONG', uri: "asdf1234" });
-    };
 
 
     render() {
-        return (<div>Welcome to the Olin Film Festival!</div>);
+        return (
+            <BrowserRouter>
+                <Switch>
+                    <Route path="/test" 
+                        component={props => <VideoInfo />}
+                        />
+                    <Route exact path="/">
+                        <div>Here is the main page.</div>
+                    </Route>
+
+                </Switch>
+            </BrowserRouter>
+            // <div>Test</div>
+        );
     }
 }
 
