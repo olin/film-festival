@@ -2,6 +2,7 @@ import ReactDOM from 'react-dom';
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import VideoInfoPanel from './video-info-panel';
+import GuidePanel from './guide';
 
 /**
  * The main React container for the app. It holds the state and passes it down
@@ -15,13 +16,19 @@ class App extends React.Component {
         return (
             <BrowserRouter>
                 <Switch>
-                    <Route path="/test" 
+                    <Route path="/watch"
                         component={props => <VideoInfoPanel />}
                         />
+                    <Route path="/guide"
+                        component={props => <GuidePanel />}
+                        />
                     <Route exact path="/">
-                        <div>Here is the main page.</div>
+                        <div>
+                            <h1> Here is the main page.</h1>
+                            <p><a href="/watch">Start the show</a></p>
+                            <p><a href="/guide">Follow the show</a></p>
+                        </div>
                     </Route>
-
                 </Switch>
             </BrowserRouter>
             // <div>Test</div>

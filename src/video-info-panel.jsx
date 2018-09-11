@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import SocketIO from 'socket.io-client';
+import io from 'socket.io-client';
 import ReactPlayer from 'react-player';
 
 export default class VideoInfoPanel extends React.Component {
@@ -19,7 +19,7 @@ export default class VideoInfoPanel extends React.Component {
             {name: "שטיח || Rug", url: "https://vimeo.com/channels/staffpicks/280980737"}
         ];
         // TODO: Fix the server URI
-        // this.client = new SocketIO('http://localhost:9091');
+        this.client = io('http://localhost:9091');
         // this.client.on('update', msg => this.handleUpdate(msg));
     }
 
@@ -41,6 +41,7 @@ export default class VideoInfoPanel extends React.Component {
 
     render() {
         let video = this.playlist[this.state.position];
+        this.client.emit('now-playing', video);
         console.log(`Playing ${video.name} from ${video.url}`)
         return (
         <div>
