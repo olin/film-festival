@@ -7,7 +7,17 @@ export default class VideoInfoPanel extends React.Component {
     // TODO: Add websockets
     constructor(props) {
         super(props)
-        this.state = { name: "drifto", url: "https://www.youtube.com/watch?v=yothf5A2Mgk" };
+        this.state = {
+            position: 0,
+            played: 0,
+            loaded: 0,
+            duration: 0,
+        };
+        this.playlist = [
+            {name: "drifto", url: "https://www.youtube.com/watch?v=yothf5A2Mgk" },
+            {name: "Mussel Beach by PES", url: "https://www.youtube.com/watch?v=LaHTyB399z8"},
+            {name: "שטיח || Rug", url: "https://vimeo.com/channels/staffpicks/280980737"}
+        ];
         // TODO: Fix the server URI
         // this.client = new SocketIO('http://localhost:9091');
         // this.client.on('update', msg => this.handleUpdate(msg));
@@ -18,11 +28,29 @@ export default class VideoInfoPanel extends React.Component {
         this.setState({ name: msg })
     }
 
+    loadNext = () => {
+        let newState = this.state;
+        if (newState.position + 1 == this.playlist.length) {
+            newState.position = 0;  // if at end of playlist restart
+            console.log("Restarting playlist")
+        } else {
+            newState.position++;
+        }
+        this.setState(newState)
+    }
+
     render() {
+        let video = this.playlist[this.state.position];
+        console.log(`Playing ${video.name} from ${video.url}`)
         return (
         <div>
-            <h1>{this.state.name}</h1>
-            <ReactPlayer url={this.state.url} playing />
+            <h1>{video.name}</h1>
+            <ReactPlayer
+                url={video.url}
+                playing
+                controls
+                onEnded={this.loadNext}
+                />
         </div>);
     }
 
