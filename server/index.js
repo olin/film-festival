@@ -22,12 +22,18 @@ function updateName() {
 const video = /https:\/\/(www\.youtube|vimeo)\.com\//;
 
 io.on('connection', function(socket) {
-    socket.on('now-playing', handleVideoUpdate)
+    socket.on('now-playing', function(data) {
+        console.log(data);
+        socket.broadcast.emit('now-playing', data);
+    })
     console.log('Client connected.')
 });
 
+io.on('disconnect', function() {console.log('Client disconnected.')});
+
 function handleVideoUpdate(data) {
     console.log(data)
+    io.broadcast('update-video', data)
 }
 
 app.use(cors());

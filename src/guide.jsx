@@ -7,12 +7,13 @@ export default class GuidePanel extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            video: null
+            video: ''
         }
         this.client = io('http://localhost:9091');
         this.client.on('now-playing', (data) => {
-            this.setState({ video: data })
-            console.log('Received data: ' + data);
+            console.log('Received data: ');
+            console.log(data)
+            this.setState({ video: data.name })
         })
     }
 
@@ -27,8 +28,8 @@ export default class GuidePanel extends React.Component {
         }
         return (
         <div>
-            <h1>Now Playing: {video.name}</h1>
-            <p>hyperlink: {video.url}<a href="http://example.com">http://example.com</a></p>
+            <h1>Now Playing: {this.state.video.name}</h1>
+            <p>hyperlink: {this.state.video.url}<a href="http://example.com">http://example.com</a></p>
         </div>);
     }
 }
