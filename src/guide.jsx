@@ -7,27 +7,28 @@ export default class GuidePanel extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            video: null
+            video: null,
         }
         this.client = io('http://localhost:9091');
-        this.client.on('now-playing', (data) => {
-            console.log('Received data: ' + data);
-        })
+        this.client.on('now-playing', this.handleUpdate);
+    }
+
+    handleUpdate = (data) => {
+        console.log('Received data: ');
+        console.log(data)
+        this.setState({ video: data });
+        console.log(this.state);
     }
 
 
     render() {
-        if (this.state.video == null) {
-            return (
-                <div>
-                    <p>Not connected</p>
-                </div>
-            )
-        }
-        return (
+        return ( this.state.video === null ? 
         <div>
-            <h1>Now Playing: {video.name}</h1>
-            <p>hyperlink: {video.url}<a href="http://example.com">http://example.com</a></p>
+            <p>Not connected</p>
+        </div> :
+        <div>
+            <h1>Now Playing: {this.state.video.name}</h1>
+            <p>hyperlink: <a href={this.state.video.url}>{this.state.video.url}</a></p>
         </div>);
     }
 }

@@ -32,6 +32,7 @@ export default class VideoInfoPanel extends React.Component {
         let newState = this.state;
         if (newState.position + 1 == this.playlist.length) {
             newState.position = 0;  // if at end of playlist restart
+            // this.client.emit('now-playing', this.playlist[newState.position])
             console.log("Restarting playlist")
         } else {
             newState.position++;
