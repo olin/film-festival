@@ -3,11 +3,13 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import fs from 'fs';
 import SocketIO from 'socket.io';
+import http from 'http';
 
 
 const app = express();
-const socket = new SocketIO(app);
-socket.on('connection', console.log('Client connected.'))
+var server = http.Server(app);
+var io = SocketIO(server);
+
 
 
 // Handle environment file
@@ -24,6 +26,7 @@ updateName = () => {
 // Regex to match on GET requests from component URIs
 const video = /https:\/\/(www\.youtube|vimeo)\.com\//;
 
+io.on('connection', console.log('Client connected.'))
 
 app.use(cors());
 
@@ -36,7 +39,4 @@ app.get('/live', (req, res) => {
 });
 
 
-app.listen(9091, () => {
-    console.log("Listening on port 9091");
-});
-
+server.listen(9091);
