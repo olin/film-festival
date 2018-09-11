@@ -11,6 +11,7 @@ export default class GuidePanel extends React.Component {
         }
         this.client = io('http://localhost:9091');
         this.client.on('now-playing', (data) => {
+            this.setState({ video: data })
             console.log('Received data: ' + data);
         })
     }

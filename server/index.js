@@ -21,7 +21,14 @@ function updateName() {
 // Regex to match on GET requests from component URIs
 const video = /https:\/\/(www\.youtube|vimeo)\.com\//;
 
-io.on('connection', function() {console.log('Client connected.')})
+io.on('connection', function(socket) {
+    socket.on('now-playing', handleVideoUpdate)
+    console.log('Client connected.')
+});
+
+function handleVideoUpdate(data) {
+    console.log(data)
+}
 
 app.use(cors());
 
