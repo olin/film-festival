@@ -32,12 +32,16 @@ export default class VideoInfoPanel extends React.Component {
         return (
         <div>
             <h1>{this.state.video.name}</h1>
+            <div className="player-wrapper">
             <ReactPlayer
                 url={"http://localhost:9091/media/" + this.state.video.url}
-                playing
-                controls
+                playing={true}
+                controls={false}
                 onEnded={this.loadNext}
+                width={window.innerWidth}
+                height={window.innerHeight}
                 />
+            </div>
         </div>);
     }
 
