@@ -1,9 +1,11 @@
 const cors = require('cors');
 const dotenv = require('dotenv');
 const fs = require('fs');
+const express = require('express');
 
 // Initializing server + websockets
-var app = require('express')();
+
+var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
@@ -12,20 +14,20 @@ if (fs.exists('./.env')) {
     dotenv.config();
 }
 
-let test = 0;
-function updateName() {
-    socket.broadcast('update', test);
-    test += 1;
-}
+let curVideo = {};
 
 // Regex to match on GET requests from component URIs
 const video = /https:\/\/(www\.youtube|vimeo)\.com\//;
 
 io.on('connection', function(socket) {
+    // Send the currently playing video to clients
+    socket.emit('now-playing', curVideo);
+
+    // Propagate changes when a new video starts playing
     socket.on('now-playing', function(data) {
         console.log(data);
         socket.broadcast.emit('now-playing', data);
-    })
+    });
     console.log('Client connected.')
 });
 
@@ -37,6 +39,11 @@ function handleVideoUpdate(data) {
 }
 
 app.use(cors());
+app.use('/media', express.static('media'));
+
+app.get('/', (req, res) => {
+    res.send('Hello World');
+})
 
 app.get(['/vote'], (req, res) => {
     res.send()
