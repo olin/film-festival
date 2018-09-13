@@ -21,7 +21,7 @@ function initClient(socket) {
 
 function getNextVideo(socket) {
     // Move to the next video, looping back if necessary
-    curVideo = (curVideo + 1) % playlist.length;
+    curVideo = (curVideo + 1) % files.length;
 
     const data = {url: files[curVideo], name: metadata[files[curVideo]]};
     console.log(data);
