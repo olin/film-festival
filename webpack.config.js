@@ -26,11 +26,6 @@ module.exports = {
         include: APP_DIR,
         loaders: ['style-loader', 'css-loader'],
       },
-      {
-        test: /\.mp4$/,
-        include: /media/,
-        use: 'file-loader',
-      }
     ]
   },
   resolve: {
