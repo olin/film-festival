@@ -5,25 +5,25 @@ const express = require('express');
 const socket = require('./websocket-server');
 const http = require('http');
 
-var playlist = [{name: "drifto", url: "https://www.youtube.com/watch?v=yothf5A2Mgk" },
-    {name: "Mussel Beach by PES", url: "https://www.youtube.com/watch?v=LaHTyB399z8"},
-    {name: "שטיח || Rug", url: "https://vimeo.com/channels/staffpicks/280980737"}
-];
+const files = fs.readdirSync('media');
+console.log(files);
 
+const metadata = {'big_buck_bunny.mp4': 'Big Buck Bunny', 'echo-hereweare.mp4': 'Here We Are'}
 var curVideo = 0;
 
 
 function initClient(socket) {
+    const video = {url: files[curVideo], name: metadata[files[curVideo]]};
     // Send the currently playing video to clients
-    socket.emit('load-next', playlist[curVideo])
-    socket.emit('now-playing', playlist[curVideo]);
+    socket.emit('load-next', video)
+    socket.emit('now-playing', video);
 }
 
 function getNextVideo(socket) {
     // Move to the next video, looping back if necessary
     curVideo = (curVideo + 1) % playlist.length;
 
-    const data = playlist[curVideo];
+    const data = {url: files[curVideo], name: metadata[files[curVideo]]};
     console.log(data);
     socket.emit('load-next', data);
     // Update the "guide" clients

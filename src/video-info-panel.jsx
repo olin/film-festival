@@ -23,15 +23,6 @@ export default class VideoInfoPanel extends React.Component {
     }
 
     loadNext = () => {
-        // let newState = this.state;
-        // if (newState.position + 1 == this.playlist.length) {
-        //     newState.position = 0;  // if at end of playlist restart
-        //     // this.client.emit('now-playing', this.playlist[newState.position])
-        //     console.log("Restarting playlist")
-        // } else {
-        //     newState.position++;
-        // }
-        // this.setState(newState)
         this.client.emit('next-video');
     }
 
@@ -42,7 +33,7 @@ export default class VideoInfoPanel extends React.Component {
         <div>
             <h1>{this.state.video.name}</h1>
             <ReactPlayer
-                url={this.state.video.url}
+                url={"http://localhost:9091/media/" + this.state.video.url}
                 playing
                 controls
                 onEnded={this.loadNext}

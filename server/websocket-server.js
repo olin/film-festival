@@ -8,8 +8,6 @@ function websocketServer(server, initCallback, sendNextVideo) {
     this.server = server;
     this.io = socket(this.server);
     
-    var a = 123;
-    const callbackFunc = initCallback;
     // Setup websocket listening functions
     this.io.on('connection', function(socket) {
         
