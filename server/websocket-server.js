@@ -1,20 +1,25 @@
-var http = require('http');
 var socket = require('socket.io');
 
-function websocketServer(app) {
+function websocketServer(server, initCallback, sendNextVideo) {
     if (!(this instanceof websocketServer)) {
-        return new websocketServer(app);
+        return new websocketServer(server);
       }
     
-    this.app = app;
-    this.server = http.Server(this.app);
+    this.server = server;
     this.io = socket(this.server);
     
+    var a = 123;
+    const callbackFunc = initCallback;
     // Setup websocket listening functions
     this.io.on('connection', function(socket) {
-        // Send the currently playing video to clients
-        socket.emit('now-playing', curVideo);
-    
+        
+        initCallback(socket);
+
+        // Sends the next video in the playlist to the client
+        socket.on('next-video', function(data) {
+            sendNextVideo(socket);
+        })
+
         // Propagate changes when a new video starts playing
         socket.on('now-playing', function(data) {
             socket.broadcast.emit('now-playing', data);
