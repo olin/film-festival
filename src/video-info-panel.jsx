@@ -8,51 +8,50 @@ export default class VideoInfoPanel extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            position: 0,
-            played: 0,
-            loaded: 0,
-            duration: 0,
+            video: {},
+            windowWidth: window.innerWidth,
+            windowHeight: window.innerHeight
         };
-        this.playlist = [
-            {name: "drifto", url: "https://www.youtube.com/watch?v=yothf5A2Mgk" },
-            {name: "Mussel Beach by PES", url: "https://www.youtube.com/watch?v=LaHTyB399z8"},
-            {name: "שטיח || Rug", url: "https://vimeo.com/channels/staffpicks/280980737"}
-        ];
         // TODO: Fix the server URI
         this.client = io('http://localhost:9091');
+        this.client.on('load-next', this.handleUpdate);
         // this.client.on('update', msg => this.handleUpdate(msg));
     }
 
     handleUpdate = (msg) => {
+        console.log("New video");
         console.log(msg);
-        this.setState({ name: msg })
+        this.setState({ video: msg });
+    }
+
+    handleResize = (e) => {
+        this.setState({ windowWidth: window.innerWidth });
     }
 
     loadNext = () => {
-        let newState = this.state;
-        if (newState.position + 1 == this.playlist.length) {
-            newState.position = 0;  // if at end of playlist restart
-            // this.client.emit('now-playing', this.playlist[newState.position])
-            console.log("Restarting playlist")
-        } else {
-            newState.position++;
-        }
-        this.setState(newState)
+        this.client.emit('next-video');
+    }
+
+    componentDidMount() {
+        window.addEventListener('resize', this.handleResize)
     }
 
     render() {
-        let video = this.playlist[this.state.position];
-        this.client.emit('now-playing', video);
-        console.log(`Playing ${video.name} from ${video.url}`)
+        // this.client.emit('now-playing', video);
+        console.log(`Playing ${this.state.video.name} from ${this.state.video.url}`)
         return (
         <div>
-            <h1>{video.name}</h1>
+            <h1>{this.state.video.name}</h1>
+            <div className="player-wrapper">
             <ReactPlayer
-                url={video.url}
-                playing
-                controls
+                url={"http://localhost:9091/media/" + this.state.video.url}
+                playing={true}
+                controls={false}
                 onEnded={this.loadNext}
+                width={this.state.windowWidth}
+                height={this.state.windowHeight-15}
                 />
+            </div>
         </div>);
     }
 
