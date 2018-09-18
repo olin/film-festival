@@ -9,6 +9,8 @@ export default class VideoInfoPanel extends React.Component {
         super(props)
         this.state = {
             video: {},
+            windowWidth: window.innerWidth,
+            windowHeight: window.innerHeight
         };
         // TODO: Fix the server URI
         this.client = io('http://localhost:9091');
@@ -22,8 +24,16 @@ export default class VideoInfoPanel extends React.Component {
         this.setState({ video: msg });
     }
 
+    handleResize = (e) => {
+        this.setState({ windowWidth: window.innerWidth });
+    }
+
     loadNext = () => {
         this.client.emit('next-video');
+    }
+
+    componentDidMount() {
+        window.addEventListener('resize', this.handleResize)
     }
 
     render() {
@@ -38,8 +48,8 @@ export default class VideoInfoPanel extends React.Component {
                 playing={true}
                 controls={false}
                 onEnded={this.loadNext}
-                width={window.innerWidth}
-                height={window.innerHeight}
+                width={this.state.windowWidth}
+                height={this.state.windowHeight-15}
                 />
             </div>
         </div>);
