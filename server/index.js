@@ -4,6 +4,7 @@ const fs = require('fs');
 const express = require('express');
 const socket = require('./websocket-server');
 const http = require('http');
+const bodyParser = require('body-parser');
 
 const files = fs.readdirSync('media');
 console.log(files);
@@ -38,6 +39,9 @@ var server = http.Server(app);
 console.log(initClient);
 var socketServer = new socket(server, initClient, getNextVideo);
 
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
+
 // Handle environment file
 if (fs.exists('./.env')) {
     dotenv.config();
@@ -70,6 +74,16 @@ app.get(['/vote'], (req, res) => {
 
 app.get('/live', (req, res) => {
     res.send('Hello World')
+    // socketServer.updatePoints({points: [[10,10],[20,10],[20,20], [10,20]]});
+    // socketServer.updatePoints({points: req.points});
+
+});
+
+app.post('/points', (req, res) => {
+    console.log(req.body);
+    // console.log(req.body.points.x)
+    socketServer.updatePoints({points: req.body.points});
+    res.send('Points successfully updated.');
 });
 
 // Begin servergi

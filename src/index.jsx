@@ -25,6 +25,7 @@ class App extends React.Component {
                         />
                     <Route path="/draw"
                         component={props => <Whiteboard />}
+                        />
                     <Route exact path="/">
                         <div>
                             <h1> Here is the main page.</h1>

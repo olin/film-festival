@@ -17,6 +17,7 @@ export default class Whiteboard extends React.Component {
     };
 
     handleUpdate = (msg) => {
+        console.log(msg);
         this.setState({points: msg.points});
     }
 
@@ -36,10 +37,12 @@ export default class Whiteboard extends React.Component {
 
         p.draw = () => {
             let i = 1;
-            // p.line(20,100,20,100);
-            for (i = 1; i < points.length; i++) {
+            p.stroke(255)
+            p.line(20,100,20,100);
+            for (i = 1; i < points.x.length; i++) {
                 p.stroke(i*15, 255, 120)
-                p.line(points[i-1][0], points[i-1][1], points[i][0], points[i][1]);
+                // p.point(points[i][0], points[i][1])
+                p.line(points[i-1].x, points[i-1].y, points[i].x, points[i].y);
             }
         };
     };
