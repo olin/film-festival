@@ -23,10 +23,10 @@ export default class GuidePanel extends React.Component {
 
     render() {
         return ( this.state.video === null ? 
-        <div>
+        <div className={"guide"}>
             <p>Not connected</p>
         </div> :
-        <div>
+        <div className={"guide"}>
             <h1>Now Playing: {this.state.video.name}</h1>
             <p>hyperlink: <a href={this.state.video.url}>{this.state.video.url}</a></p>
         </div>);
