@@ -39,7 +39,7 @@ var server = http.Server(app);
 console.log(initClient);
 var socketServer = new socket(server, initClient, getNextVideo);
 
-app.use(bodyParser.json()); // support json encoded bodies
+app.use(express.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 // Handle environment file

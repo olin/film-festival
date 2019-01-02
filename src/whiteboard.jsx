@@ -13,7 +13,7 @@ export default class Whiteboard extends React.Component {
         super(props);
         this.client = io('http://localhost:9091');
         this.client.on('points', this.handleUpdate)
-        this.state = {points: []}
+        this.state = {points: {x: [], y: []}}
     };
 
     handleUpdate = (msg) => {
@@ -42,7 +42,8 @@ export default class Whiteboard extends React.Component {
             for (i = 1; i < points.x.length; i++) {
                 p.stroke(i*15, 255, 120)
                 // p.point(points[i][0], points[i][1])
-                p.line(points[i-1].x, points[i-1].y, points[i].x, points[i].y);
+                // p.point(points.x[i], points.y[i])
+                p.line(points.x[i-1], points.y[i-1], points.x[i], points.y[i]);
             }
         };
     };
